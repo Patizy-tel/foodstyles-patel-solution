@@ -8,7 +8,7 @@ export class SmartSearchController {
   constructor(private readonly smartSearchService: SmartSearchService) {}
 
   @Post('add')
-  async addDishTypes(@Body('search') payload: { search: string }) {
+  async addDishTypes(@Body('search') payload: any) {
     return await this.smartSearchService.searchEntities(payload);
   }
 }

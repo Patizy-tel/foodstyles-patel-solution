@@ -27,33 +27,6 @@ export class SmartSearchService {
   ) {}
 
   async searchEntities(searchTerm: any) {
-    const extractedEntities: any = await this.extractEntities(
-      searchTerm.search,
-    );
-    console.log(extractedEntities);
-    // Query the database based on the extracted entities
-    const cityResults = await this.cityModel.find({
-      where: { name: extractedEntities.cities },
-    });
-    const brandResults = await this.brandsModel.find({
-      where: { name: extractedEntities.brands },
-    });
-    const dishTypeResults = await this.dishTypeModel.find({
-      where: { name: extractedEntities.dishTypes },
-    });
-    const dietResults = await this.dietsModel.find({
-      where: { name: extractedEntities.diets },
-    });
-
-    return {
-      cities: cityResults,
-      brands: brandResults,
-      dishTypes: dishTypeResults,
-      diets: dietResults,
-    };
-  }
-
-  private async extractEntities(searchTerm: string) {
     const entities = [];
 
     // Mapping of keywords to entity types
@@ -64,12 +37,22 @@ export class SmartSearchService {
       diet: 'diets',
     };
 
+    const promises = [
+      this.citiesService.findAll(),
+      this.brandsService.findAll(),
+      this.dishTypesService.findAll(),
+      this.dietsService.findAll(),
+    ];
+
+    const [cities, brands, dishTypes, diets] = await Promise.all(promises);
+
     const data = {
-      cities: await this.citiesService.findAll(),
-      brands: await this.brandsService.findAll(),
-      dishTypes: await this.dishTypesService.findAll(),
-      diets: await this.dietsService.findAll(),
+      cities,
+      brands,
+      dishTypes,
+      diets,
     };
+
     // console.log(data);
     for (const key of Object.keys(data)) {
       if (!data[key].length) {
@@ -83,9 +66,12 @@ export class SmartSearchService {
 
     // Iterate through the entities to identify matches
     for (const entityType in entityTypes) {
+      const regexPattern = new RegExp(
+        terms.map((term) => `\\b${term}\\w*`).join('|'),
+      );
       const keyword = entityTypes[entityType];
       const matches = data[keyword].filter((entity) =>
-        terms.includes(entity.name.toLowerCase()),
+        regexPattern.test(entity.name.toLowerCase()),
       );
 
       if (matches.length > 0) {
@@ -95,7 +81,6 @@ export class SmartSearchService {
         });
       }
     }
-
     return entities;
   }
 }
