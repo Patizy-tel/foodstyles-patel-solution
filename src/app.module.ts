@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Cities } from './models';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AppService } from './app.service';
         ssl: false,
       }),
     }),
+    TypeOrmModule.forFeature([Cities]),
   ],
   controllers: [AppController],
   providers: [AppService],
