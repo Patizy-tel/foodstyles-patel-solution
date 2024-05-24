@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DishTypes } from 'src/models';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 @Injectable()
 export class DishTypesService {
@@ -21,6 +21,15 @@ export class DishTypesService {
 
   async findAll(): Promise<any> {
     const result = await this.dishTypeModel.find();
+    return result;
+  }
+
+  async findByName(term) {
+    const result = await this.dishTypeModel.find({
+      where: {
+        name: Like(`%${term}%`),
+      },
+    });
     return result;
   }
 }

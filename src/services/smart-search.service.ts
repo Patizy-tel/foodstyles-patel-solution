@@ -57,8 +57,10 @@ export class SmartSearchService {
     );
 
     const matchingEntities = await this[`${keyword}Service`].findAll(); // Access service dynamically
-    return matchingEntities.filter((entity) =>
+    const resultAfterFilter = matchingEntities.filter((entity) =>
       regexPattern.test(entity.name.toLowerCase()),
     );
+
+    return resultAfterFilter;
   }
 }

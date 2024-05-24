@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Diets } from 'src/models';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 @Injectable()
 export class DietsService {
@@ -21,6 +21,15 @@ export class DietsService {
 
   async findAll(): Promise<any> {
     const result = await this.dietsModel.find();
+    return result;
+  }
+
+  async findByName(term) {
+    const result = await this.dietsModel.find({
+      where: {
+        name: Like(`%${term}%`),
+      },
+    });
     return result;
   }
 }
