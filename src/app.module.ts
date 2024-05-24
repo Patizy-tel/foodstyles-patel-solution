@@ -4,9 +4,22 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import {
+  CitiesController,
+  DietsController,
+  DishTypesController,
+  SmartSearchController,
+} from './controllers';
+import { BrandsController } from './controllers/brands.controller';
 import { Brands, Cities, Diets, DishTypes } from './models';
-import { CitiesController } from './controllers';
-import { CitiesService } from './services';
+import {
+  BrandsService,
+  CitiesService,
+  DietsService,
+  DishTypesService,
+  SmartSearchService,
+} from './services';
+import { ConnectionOptions } from 'typeorm';
 
 @Module({
   imports: [
@@ -16,24 +29,39 @@ import { CitiesService } from './services';
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get<string>('DATABASE_HOST'),
-        port: parseInt(configService.get<string>('DATABASE_PORT'), 10),
-        username: configService.get<string>('DATABASE_USER'),
-        password: configService.get<string>('DATABASE_PASSWORD'),
-        database: configService.get<string>('DATABASE_NAME'),
-        entities: [join(__dirname, '**', '*.entity.{ts,js}')],
-        synchronize: true,
-        ssl: false,
-      }),
+      useFactory: (configService: ConfigService) =>
+        ({
+          type: 'mysql',
+          host: configService.get<string>('DATABASE_HOST'),
+          port: Number.parseInt(configService.get<string>('DATABASE_PORT'), 10),
+          username: configService.get<string>('DATABASE_USER'),
+          password: configService.get<string>('DATABASE_PASSWORD'),
+          database: configService.get<string>('DATABASE_NAME'),
+          entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+          synchronize: true,
+          ssl: false,
+        }) as ConnectionOptions,
     }),
     TypeOrmModule.forFeature([Cities]),
     TypeOrmModule.forFeature([Brands]),
     TypeOrmModule.forFeature([DishTypes]),
     TypeOrmModule.forFeature([Diets]),
   ],
-  controllers: [AppController, CitiesController],
-  providers: [AppService, CitiesService],
+  controllers: [
+    AppController,
+    BrandsController,
+    CitiesController,
+    DietsController,
+    DishTypesController,
+    SmartSearchController,
+  ],
+  providers: [
+    AppService,
+    CitiesService,
+    DietsService,
+    BrandsService,
+    DishTypesService,
+    SmartSearchService,
+  ],
 })
 export class AppModule {}
