@@ -24,12 +24,10 @@ export class DishTypesService {
     return result;
   }
 
-  async findByName(term) {
-    const result = await this.dishTypeModel.find({
-      where: {
-        name: Like(`%${term}%`),
-      },
+  async findByName(term: string): Promise<any> {
+    const results = await this.dishTypeModel.find({
+      where: { name: Like(term) },
     });
-    return result;
+    return results;
   }
 }

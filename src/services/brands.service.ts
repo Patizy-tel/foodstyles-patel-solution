@@ -24,12 +24,11 @@ export class BrandsService {
     return result;
   }
 
-  async findByName(term) {
-    const result = await this.brandsModel.find({
-      where: {
-        name: Like(`%${term}%`),
-      },
+  async findByName(term: string): Promise<any> {
+    const results = await this.brandsModel.find({
+      where: { name: Like(term) },
     });
-    return result;
+
+    return results;
   }
 }

@@ -24,12 +24,11 @@ export class DietsService {
     return result;
   }
 
-  async findByName(term) {
-    const result = await this.dietsModel.find({
-      where: {
-        name: Like(`%${term}%`),
-      },
+  async findByName(term: string): Promise<any> {
+    const results = await this.dietsModel.find({
+      where: { name: Like(term) },
     });
-    return result;
+
+    return results;
   }
 }
