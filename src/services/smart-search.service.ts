@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brands, Cities, Diets, DishTypes } from 'src/models';
+import { SearchDto } from 'src/models/dto';
 import { Connection, Repository } from 'typeorm';
 
 @Injectable()
@@ -17,11 +18,11 @@ export class SmartSearchService {
   ) {}
 
   async extractEntities(
-    searchTerm: string,
+    searchTerm: SearchDto,
     page: number = 1,
     pageSize: number = 100,
   ): Promise<any[]> {
-    const words = searchTerm.split(' ');
+    const words = searchTerm.search.split(' ');
 
     const entities = [];
     for (const word of words) {
