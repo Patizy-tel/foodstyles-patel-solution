@@ -19,5 +19,8 @@ export class CitiesService {
     }
   }
 
-  async populateCities(): Promise<any> {}
+  async findAll(): Promise<any> {
+    const result = await this.cityModel.find();
+    return result;
+  }
 }

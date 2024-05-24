@@ -19,5 +19,8 @@ export class DietsService {
     }
   }
 
-  async populateDiets(): Promise<any> {}
+  async findAll(): Promise<any> {
+    const result = await this.dietsModel.find();
+    return result;
+  }
 }

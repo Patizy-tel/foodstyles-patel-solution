@@ -5,10 +5,10 @@ import { DishTypesService } from 'src/services';
 @ApiTags('Dish-Types')
 @Controller('Dish-Types')
 export class DishTypesController {
-  constructor(private readonly dishTyoesServices: DishTypesService) {}
+  constructor(private readonly dishTypesServices: DishTypesService) {}
 
   @Post('add')
   async addDishTypes(@Body() payload: any) {
-    return await this.dishTyoesServices.createDishTypes(payload);
+    return await this.dishTypesServices.createDishTypes(payload);
   }
 }
