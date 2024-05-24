@@ -6,7 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Brands, Cities, Diets, DishTypes } from './models';
 import { CitiesController, DietsController } from './controllers';
-import { CitiesService, DietsService } from './services';
+import { BrandsService, CitiesService, DietsService } from './services';
+import { BrandsController } from './controllers/brands,controller';
 
 @Module({
   imports: [
@@ -33,7 +34,12 @@ import { CitiesService, DietsService } from './services';
     TypeOrmModule.forFeature([DishTypes]),
     TypeOrmModule.forFeature([Diets]),
   ],
-  controllers: [AppController, CitiesController, DietsController],
-  providers: [AppService, CitiesService, DietsService],
+  controllers: [
+    AppController,
+    CitiesController,
+    DietsController,
+    BrandsController,
+  ],
+  providers: [AppService, CitiesService, DietsService, BrandsService],
 })
 export class AppModule {}
