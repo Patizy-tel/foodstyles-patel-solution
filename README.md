@@ -30,7 +30,7 @@ after that run npm run dev to start the server and go to http://localhost:3000/a
 
 
 
- my process flow when like this,
+ my process flow was like this,
 
 
 
@@ -55,7 +55,7 @@ after that run npm run dev to start the server and go to http://localhost:3000/a
 
 
 
- after populating the tables i went on create few endpoints of for  intersing new data  also
+ after populating the tables i went on create few endpoints of for  inserting new data  also
 
 
 
@@ -66,14 +66,14 @@ after that i went on create an algorithm to search for items in the database
 
 
 
- and the  controllers thats where endpoints are located which ahve been linked to the logic created in the services
+ and the  controllers thats where endpoints are located which have been linked to the logic created in the services
 
 
 Using the constraints mentioned in the  document
 
 for optimal performance i managed to combine the  search query into a single query
 
-and i also added pagination  so that also i wont load all the infomation into  the memory, so the results are also  based on search query and params
+and i also added pagination  so that  i wont load all the infomation into  the memory, so the results are also  based on search query and params
 
 
 one of the setback i faced was trying to add a regex on my query so that i would be able to  filter related results , the solution that i tried was causing some errors  in the syntax  and i couldnt find a proper solution
@@ -84,6 +84,10 @@ my alternative was to  i implemented it on a non optimal solution though
 //////////////////////////////////////////////////////////////////////
 some of the ideas i have to improve  this solution is to create some sort of caching mechannism for those words  that are being searched more frequently
 
+
+lastly im really greatful for considering my solution and my application , it means a lot  for me  big time
+
+ony of my previous personal projects that i  have been working on is  an online groceries and delivery solution and this challenge opened  me up on a diferent approach when it comes to implementing search and filtering  on top of implemeting microservices using  the likes of rabbitmq and kaffka
 
 
 
