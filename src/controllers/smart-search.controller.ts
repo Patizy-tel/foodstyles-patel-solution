@@ -9,6 +9,6 @@ export class SmartSearchController {
 
   @Post('add')
   async addDishTypes(@Body('search') payload: any) {
-    return await this.smartSearchService.searchEntities(payload);
+    return await this.smartSearchService.extractEntities(payload, 3, 5);
   }
 }

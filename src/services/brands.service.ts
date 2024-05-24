@@ -24,9 +24,15 @@ export class BrandsService {
     return result;
   }
 
-  async findByName(term: string): Promise<any> {
+  async findByName(
+    term: string,
+    page?: number,
+    pageSize?: number,
+  ): Promise<any> {
     const results = await this.brandsModel.find({
       where: { name: Like(term) },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
     });
 
     return results;
