@@ -1,5 +1,11 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Cities extends BaseEntity {
@@ -9,6 +15,7 @@ export class Cities extends BaseEntity {
   @Column({ nullable: false, unique: true })
   @IsNotEmpty()
   @IsString()
+  @Index()
   name: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
