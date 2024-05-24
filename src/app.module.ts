@@ -8,6 +8,7 @@ import {
   CitiesController,
   DietsController,
   DishTypesController,
+  SmartSearchController,
 } from './controllers';
 import { BrandsController } from './controllers/brands.controller';
 import { Brands, Cities, Diets, DishTypes } from './models';
@@ -16,6 +17,7 @@ import {
   CitiesService,
   DietsService,
   DishTypesService,
+  SmartSearchService,
 } from './services';
 
 @Module({
@@ -49,6 +51,7 @@ import {
     CitiesController,
     DietsController,
     DishTypesController,
+    SmartSearchController,
   ],
   providers: [
     AppService,
@@ -56,6 +59,7 @@ import {
     DietsService,
     BrandsService,
     DishTypesService,
+    SmartSearchService,
   ],
 })
 export class AppModule {}

@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { SmartSearchService } from 'src/services';
 
@@ -7,8 +7,8 @@ import { SmartSearchService } from 'src/services';
 export class SmartSearchController {
   constructor(private readonly smartSearchService: SmartSearchService) {}
 
-  @Get('add')
-  async addDishTypes(@Query() payload: any) {
+  @Post('add')
+  async addDishTypes(@Body('search') payload: { search: string }) {
     return await this.smartSearchService.searchEntities(payload);
   }
 }

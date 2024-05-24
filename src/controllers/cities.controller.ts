@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CitiesService } from 'src/services';
 
@@ -10,5 +10,10 @@ export class CitiesController {
   @Post('add')
   async addCity(@Body() payload: any) {
     return await this.citiesServices.createCity(payload);
+  }
+
+  @Get('all')
+  async getCities() {
+    return await this.citiesServices.findAll();
   }
 }

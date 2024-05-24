@@ -26,24 +26,31 @@ export class SmartSearchService {
     private dishTypesService: DishTypesService,
   ) {}
 
-  async searchEntities(searchTerm: string) {
-    const extractedEntities: any = this.extractEntities(searchTerm);
+  async searchEntities(searchTerm: any) {
+    const extractedEntities: any = await this.extractEntities(
+      searchTerm.search,
+    );
+    console.log(extractedEntities);
+    // Query the database based on the extracted entities
+    const cityResults = await this.cityModel.find({
+      where: { name: extractedEntities.cities },
+    });
+    const brandResults = await this.brandsModel.find({
+      where: { name: extractedEntities.brands },
+    });
+    const dishTypeResults = await this.dishTypeModel.find({
+      where: { name: extractedEntities.dishTypes },
+    });
+    const dietResults = await this.dietsModel.find({
+      where: { name: extractedEntities.diets },
+    });
 
-    const entities = await this.cityModel
-      .createQueryBuilder('city')
-      .innerJoinAndSelect('city.entity', 'entity')
-      .innerJoinAndSelect('entity.brand', 'brand')
-      .innerJoinAndSelect('entity.dishType', 'dishType')
-      .innerJoinAndSelect('entity.diet', 'diet')
-      .where('city.name IN (:cities)', { cities: extractedEntities.cities })
-      .andWhere('brand.name IN (:brands)', { brands: extractedEntities.brands })
-      .andWhere('dishType.name IN (:dishTypes)', {
-        dishTypes: extractedEntities.dishTypes,
-      })
-      .andWhere('diet.name IN (:diets)', { diets: extractedEntities.diets })
-      .getMany();
-
-    return entities;
+    return {
+      cities: cityResults,
+      brands: brandResults,
+      dishTypes: dishTypeResults,
+      diets: dietResults,
+    };
   }
 
   private async extractEntities(searchTerm: string) {
@@ -58,11 +65,18 @@ export class SmartSearchService {
     };
 
     const data = {
-      cities: [await this.citiesService.findAll()],
-      brands: [await this.brandsService.findAll()],
-      dishTypes: [await this.dishTypesService.findAll()],
-      diets: [await this.dietsService.findAll()],
+      cities: await this.citiesService.findAll(),
+      brands: await this.brandsService.findAll(),
+      dishTypes: await this.dishTypesService.findAll(),
+      diets: await this.dietsService.findAll(),
     };
+    // console.log(data);
+    for (const key of Object.keys(data)) {
+      if (!data[key].length) {
+        // If the value is empty, remove the key from the data object
+        delete data[key];
+      }
+    }
 
     // Split the search term into individual words
     const terms = searchTerm.toLowerCase().split(' ');
