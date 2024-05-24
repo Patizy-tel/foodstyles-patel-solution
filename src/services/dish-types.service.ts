@@ -12,8 +12,8 @@ export class DishTypesService {
 
   async createDishTypes(dishTypeInfo: any): Promise<any> {
     try {
-      const newCity = await this.dishTypeModel.create(dishTypeInfo);
-      await this.dishTypeModel.save(newCity);
+      const newDish = await this.dishTypeModel.create(dishTypeInfo);
+      await this.dishTypeModel.save(newDish);
     } catch (error) {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
