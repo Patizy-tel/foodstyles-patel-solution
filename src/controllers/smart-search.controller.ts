@@ -8,11 +8,17 @@ import { SmartSearchService } from 'src/services';
 export class SmartSearchController {
   constructor(private readonly smartSearchService: SmartSearchService) {}
 
-  @Post('add')
+  @Post('optimal')
   @ApiOperation({ summary: 'Search ' })
   @ApiBody({ type: SearchDto })
-  async addDishTypes(@Body() payload: SearchDto) {
-    console.log(payload);
+  async searchOptimal(@Body() payload: SearchDto) {
     return await this.smartSearchService.extractEntities(payload);
+  }
+
+  @Post('non-optimal')
+  @ApiOperation({ summary: 'Search ' })
+  @ApiBody({ type: SearchDto })
+  async ad(@Body() payload: SearchDto) {
+    return await this.smartSearchService.searchEntities(payload.search);
   }
 }
