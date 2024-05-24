@@ -8,7 +8,7 @@ export class DietsController {
   constructor(private readonly dietsService: DietsService) {}
 
   @Post('add')
-  async addAddress(@Body() payload: any) {
+  async addDiet(@Body() payload: any) {
     return await this.dietsService.createDiet(payload);
   }
 }

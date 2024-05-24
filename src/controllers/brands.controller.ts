@@ -8,7 +8,7 @@ export class BrandsController {
   constructor(private readonly brandsService: BrandsService) {}
 
   @Post('add')
-  async addAddress(@Body() payload: any) {
+  async addBrand(@Body() payload: any) {
     return await this.brandsService.createBrand(payload);
   }
 }

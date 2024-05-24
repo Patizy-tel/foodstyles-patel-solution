@@ -8,7 +8,7 @@ export class CitiesController {
   constructor(private readonly citiesServices: CitiesService) {}
 
   @Post('add')
-  async addAddress(@Body() payload: any) {
+  async addCity(@Body() payload: any) {
     return await this.citiesServices.createCity(payload);
   }
 }
