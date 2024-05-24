@@ -1,5 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { SearchDto } from 'src/models/dto';
 import { SmartSearchService } from 'src/services';
 
 @ApiTags('Smart-Search')
@@ -7,8 +8,17 @@ import { SmartSearchService } from 'src/services';
 export class SmartSearchController {
   constructor(private readonly smartSearchService: SmartSearchService) {}
 
-  @Post('add')
-  async addDishTypes(@Body('search') payload: any) {
-    return await this.smartSearchService.searchEntities(payload);
+  @Post('optimal')
+  @ApiOperation({ summary: 'Search ' })
+  @ApiBody({ type: SearchDto })
+  async searchOptimal(@Body() payload: SearchDto) {
+    return await this.smartSearchService.extractEntities(payload);
+  }
+
+  @Post('non-optimal')
+  @ApiOperation({ summary: 'Search ' })
+  @ApiBody({ type: SearchDto })
+  async ad(@Body() payload: SearchDto) {
+    return await this.smartSearchService.searchEntities(payload.search);
   }
 }

@@ -19,6 +19,7 @@ import {
   DishTypesService,
   SmartSearchService,
 } from './services';
+import { ConnectionOptions } from 'typeorm';
 
 @Module({
   imports: [
@@ -28,17 +29,18 @@ import {
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get<string>('DATABASE_HOST'),
-        port: Number.parseInt(configService.get<string>('DATABASE_PORT'), 10),
-        username: configService.get<string>('DATABASE_USER'),
-        password: configService.get<string>('DATABASE_PASSWORD'),
-        database: configService.get<string>('DATABASE_NAME'),
-        entities: [join(__dirname, '**', '*.entity.{ts,js}')],
-        synchronize: true,
-        ssl: false,
-      }),
+      useFactory: (configService: ConfigService) =>
+        ({
+          type: 'mysql',
+          host: configService.get<string>('DATABASE_HOST'),
+          port: Number.parseInt(configService.get<string>('DATABASE_PORT'), 10),
+          username: configService.get<string>('DATABASE_USER'),
+          password: configService.get<string>('DATABASE_PASSWORD'),
+          database: configService.get<string>('DATABASE_NAME'),
+          entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+          synchronize: true,
+          ssl: false,
+        }) as ConnectionOptions,
     }),
     TypeOrmModule.forFeature([Cities]),
     TypeOrmModule.forFeature([Brands]),

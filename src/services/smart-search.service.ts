@@ -1,13 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brands, Cities, Diets, DishTypes } from 'src/models';
-import { Repository } from 'typeorm';
-import {
-  BrandsService,
-  CitiesService,
-  DietsService,
-  DishTypesService,
-} from '.';
+import { SearchDto } from 'src/models/dto';
+import { Connection, Repository } from 'typeorm';
 
 @Injectable()
 export class SmartSearchService {
@@ -19,12 +14,64 @@ export class SmartSearchService {
     @InjectRepository(Brands)
     private brandsModel: Repository<Brands>,
     @InjectRepository(Cities)
-    private cityModel: Repository<Cities>,
-    private brandsService: BrandsService,
-    private citiesService: CitiesService,
-    private dietsService: DietsService,
-    private dishTypesService: DishTypesService,
+    private connection: Connection,
   ) {}
+
+  /*
+  MY OPTIMAL SOLUTION
+  */
+  async extractEntities(
+    searchTerm: SearchDto,
+    page: number = 1,
+    pageSize: number = 100,
+  ): Promise<any[]> {
+    const words = searchTerm.search.split(' ');
+
+    const entities = [];
+    for (const word of words) {
+      const offset = (page - 1) * pageSize;
+      const result = await this.connection.query(
+        `
+        (SELECT 'city' as type, id, name FROM cities WHERE LOWER(name) LIKE  ? LIMIT ? OFFSET ?)
+        UNION ALL
+        (SELECT 'brand' as type, id, name FROM brands WHERE LOWER(name) LIKE ? LIMIT ? OFFSET ?)
+        UNION ALL
+        (SELECT 'dishType' as type, id, name FROM dish_types WHERE LOWER(name) LIKE ? LIMIT ? OFFSET ?)
+        UNION ALL
+        (SELECT 'diet' as type, id, name FROM diets WHERE LOWER(name) LIKE ? LIMIT ? OFFSET ?)
+        `,
+        [
+          word,
+          pageSize,
+          offset,
+          word,
+          pageSize,
+          offset,
+          word,
+          pageSize,
+          offset,
+          word,
+          pageSize,
+          offset,
+        ],
+      );
+
+      entities.push(...result);
+    }
+
+    return entities;
+  }
+  /*
+
+ END OF OPTIMAL SOLUTION
+
+*/
+
+  //////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   * the non optimal  solution
+   */
 
   async searchEntities(searchTerm: string) {
     const entities = [];
