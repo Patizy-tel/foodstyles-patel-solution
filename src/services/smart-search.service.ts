@@ -28,7 +28,7 @@ export class SmartSearchService {
       const offset = (page - 1) * pageSize;
       const result = await this.connection.query(
         `
-        (SELECT 'city' as type, id, name FROM cities WHERE LOWER(name) LIKE ? LIMIT ? OFFSET ?)
+        (SELECT 'city' as type, id, name FROM cities WHERE LOWER(name) LIKE  ? LIMIT ? OFFSET ?)
         UNION ALL
         (SELECT 'brand' as type, id, name FROM brands WHERE LOWER(name) LIKE ? LIMIT ? OFFSET ?)
         UNION ALL
