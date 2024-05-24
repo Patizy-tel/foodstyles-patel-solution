@@ -4,7 +4,7 @@ import { Cities } from 'src/models';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class TransactionService {
+export class CitiesService {
   constructor(
     @InjectRepository(Cities)
     private cityModel: Repository<Cities>,
@@ -18,4 +18,6 @@ export class TransactionService {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  async populateCities(): Promise<any> {}
 }
