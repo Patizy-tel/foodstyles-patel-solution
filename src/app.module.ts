@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Cities } from './models';
+import { Brands, Cities, Diets, DishTypes } from './models';
 import { CitiesController } from './controllers';
 import { CitiesService } from './services';
 
@@ -29,6 +29,9 @@ import { CitiesService } from './services';
       }),
     }),
     TypeOrmModule.forFeature([Cities]),
+    TypeOrmModule.forFeature([Brands]),
+    TypeOrmModule.forFeature([DishTypes]),
+    TypeOrmModule.forFeature([Diets]),
   ],
   controllers: [AppController, CitiesController],
   providers: [AppService, CitiesService],
