@@ -5,8 +5,8 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Brands, Cities, Diets, DishTypes } from './models';
-import { CitiesController } from './controllers';
-import { CitiesService } from './services';
+import { CitiesController, DietsController } from './controllers';
+import { CitiesService, DietsService } from './services';
 
 @Module({
   imports: [
@@ -33,7 +33,7 @@ import { CitiesService } from './services';
     TypeOrmModule.forFeature([DishTypes]),
     TypeOrmModule.forFeature([Diets]),
   ],
-  controllers: [AppController, CitiesController],
-  providers: [AppService, CitiesService],
+  controllers: [AppController, CitiesController, DietsController],
+  providers: [AppService, CitiesService, DietsService],
 })
 export class AppModule {}
