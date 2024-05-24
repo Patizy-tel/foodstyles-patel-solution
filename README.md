@@ -81,7 +81,8 @@ one of the setback i faced was trying to add a regex on my query so that i would
 
 
 my alternative was to  i implemented it on a non optimal solution though
-
+//////////////////////////////////////////////////////////////////////
+some of the ideas i have to improve  this solution is to create some sort of caching mechannism for those words  that are being searched more frequently
 
 
 
