@@ -3,6 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Brands, Cities, Diets, DishTypes } from 'src/models';
 import { SearchDto } from 'src/models/dto';
 import { Connection, Repository } from 'typeorm';
+import {
+  BrandsService,
+  CitiesService,
+  DietsService,
+  DishTypesService,
+} from '.';
 
 @Injectable()
 export class SmartSearchService {
@@ -15,6 +21,10 @@ export class SmartSearchService {
     private brandsModel: Repository<Brands>,
     @InjectRepository(Cities)
     private connection: Connection,
+    private brandsService: BrandsService,
+    private citiesService: CitiesService,
+    private dietsService: DietsService,
+    private dishTypesService: DishTypesService,
   ) {}
 
   /*
