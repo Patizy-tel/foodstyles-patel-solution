@@ -26,10 +26,8 @@ export class SmartSearchService {
     private dishTypesService: DishTypesService,
   ) {}
 
-  async searchEntities(searchTerm: any) {
+  async searchEntities(searchTerm: string) {
     const entities = [];
-
-    // Mapping of keywords to entity types
     const entityTypes = {
       city: 'cities',
       brand: 'brands',
@@ -37,50 +35,30 @@ export class SmartSearchService {
       diet: 'diets',
     };
 
-    const promises = [
-      this.citiesService.findAll(),
-      this.brandsService.findAll(),
-      this.dishTypesService.findAll(),
-      this.dietsService.findAll(),
-    ];
-
-    const [cities, brands, dishTypes, diets] = await Promise.all(promises);
-
-    const data = {
-      cities,
-      brands,
-      dishTypes,
-      diets,
-    };
-
-    // console.log(data);
-    for (const key of Object.keys(data)) {
-      if (!data[key].length) {
-        // If the value is empty, remove the key from the data object
-        delete data[key];
-      }
-    }
-
-    // Split the search term into individual words
-    const terms = searchTerm.toLowerCase().split(' ');
-
-    // Iterate through the entities to identify matches
     for (const entityType in entityTypes) {
-      const regexPattern = new RegExp(
-        terms.map((term) => `\\b${term}\\w*`).join('|'),
-      );
       const keyword = entityTypes[entityType];
-      const matches = data[keyword].filter((entity) =>
-        regexPattern.test(entity.name.toLowerCase()),
-      );
+      const matches = await this.findMatchingEntities(searchTerm, keyword);
 
       if (matches.length > 0) {
-        matches.forEach((match) => {
-          const entityObj = { [entityType]: match };
-          entities.push(entityObj);
-        });
+        for (const match of matches) {
+          entities.push({ [entityType]: match });
+        }
       }
     }
+
     return entities;
+  }
+
+  // Helper function for fetching and filtering entities of a specific type
+  async findMatchingEntities(searchTerm: string, keyword: string) {
+    const terms = searchTerm.toLowerCase().split(' ');
+    const regexPattern = new RegExp(
+      terms.map((term) => `\\b${term}\\w*`).join('|'),
+    );
+
+    const matchingEntities = await this[`${keyword}Service`].findAll(); // Access service dynamically
+    return matchingEntities.filter((entity) =>
+      regexPattern.test(entity.name.toLowerCase()),
+    );
   }
 }
